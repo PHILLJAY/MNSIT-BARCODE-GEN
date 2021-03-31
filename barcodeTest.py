@@ -1,79 +1,75 @@
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-import barcode as bar
+
 from PIL import Image as pil
 
 # WORKING CODE SHOW
 
-# from tensorflow.keras.datasets import mnist
-# (X_train, Y_train), (X_test, Y_test) = mnist.load_data()
-# sample = 2
-# image = X_train[sample]
+from tensorflow.keras.datasets import mnist
 
-# fig = plt.figure()
-# plt.imshow(image, cmap='gray')
-# plt.show()
+(X_train, Y_train), (X_test, Y_test) = mnist.load_data()
 
-# loads image
-im = pil.open("Herbert.jpg")
-px = im.load()
+sample = 256
+image = X_train[sample]
+print(image)
 
-# im.show()
+barcode = []
+# horizontal barcode
+# for x in range(2, 26):
+#     temp = 0
+#     for y in range(2, 26):
+#         temp += image[x, y]
+#     if (temp / 24) < 48:
+#         barcode.append(0)
+#     else:
+#         barcode.append(1)
+#
+# # vertical barcode
+# for y in range(2, 26):
+#     temp = 0
+#     for x in range(2, 26):
+#         temp += image[x, y]
+#     if (temp / 24) < 48:
+#         barcode.append(0)
+#     else:
+#         barcode.append(1)
 
-# Test Code Down Here Ignore
-# print(px[4, 4])
-# print(px[6, 6])
-# testMore = px[6, 6] + px[4, 4]
-# print(testMore)
+# diagonal barcode
 
-# print("height is " + str(height))
-# print("width is " + str(width))
-# print(list(im.getdata(0)))
-
-width, height = im.size  # Creates variables for width and height from the image
-pxList = list(im.getdata(0))  # Creates a list of each individual pixel using only the R channel
-barcode = []  # Creates a list for the barcode itself
-
-# Loops through each row
-for x in range(width):
-    # Debug code, ignore
-    # print("checkpoint1")
-    # print("current value of x is: " + str(x))
-
-    temp = 0  # Temp int to hold the amount of white and black images
-    for y in range(height):  # Cycles through each column
-        # print((int(x) * int(width)) + y)
-        # print("checkpoint2")
-
-        # The value of the pixel ranges from 0-255, 255 being 100% white, 0 Being 100% black
-        # If the pixel is under 128 the pixel is black (on average) and 1 is added to temp
-        if pxList[(x * width) + y] < 128:
-            temp += 1
-        else:
-            temp -= 1
-    print(temp)  # Debug code
-    # If temp is <= 1 then it is on average a white pixel so a 0 is appended to the barcode
-    if temp <= 1:
-        barcode.append(0)
-    else:
-        barcode.append(1)
-# The same code as above but moving through columns first then rows second
-for y in range(height):
-    print("checkpoint1")
-    print("current value of x is: " + str(y))
+for i in range(0, 12):
     temp = 0
-    for x in range(width):
-        print((int(x) * int(width)) + y)
-        print("checkpoint2")
-        if pxList[(x * width) + y] < 128:
-            temp += 1
-        else:
-            temp -= 1
-    print(temp)
-    if temp <= 1:
+    for x in range(i + 1):
+        print("Coordinate [" + str(x + 14) + ", " + str(12 - i + x + 14) + "] | " + str(
+            image[(12 - i + x + 14), (x + 14)]))
+        temp += image[(12 - i + x + 14), (x + 14)]
+    print("checkpoint " + str(i + 1) + " temp value is " + str(temp))
+    print("Normalized temp value is " + str(temp / i))
+    testValue = temp / (i + 1)
+    if testValue < 48.0:
         barcode.append(0)
+        print("appending 0")
     else:
         barcode.append(1)
+        print("appending 1")
+
+for i in range(0, 13):
+    print(i)
+    temp = 0
+    for x in range(13-i):
+        print("Coordinate [" + str(x + 14 + i) + ", " + str(x + 14) + "] | " + str(
+             image[x + 14 + i, x + 14]))
+        temp += image[x + 14 + i, x + 14]
+    print("checkpoint " + str(i + 1) + " temp value is " + str(temp))
+    print("Normalized temp value is " + str(temp / (13-i)))
+    testValue = temp / (i + 1)
+    if testValue < 48.0:
+        barcode.append(0)
+        print("appending 0")
+    else:
+        barcode.append(1)
+        print("appending 1")
 
 print(barcode)
+checkThis = []
+
