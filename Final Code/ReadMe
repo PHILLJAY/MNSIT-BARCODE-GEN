@@ -1,0 +1,9 @@
+**************************************
+Read Me
+**************************************
+
+1. This Program uses Numpy, Matplotlib, and Tensorflow as libraries. Please install them in order to get the program running correctly.
+
+2. If you would like to remove the one image limit and print out many smiliar images, remove the break on line 98.
+
+If you have any problems with this program, please contact ether donald.rea@ontariotechu.net or philip.jasionowski@gmail.com.
